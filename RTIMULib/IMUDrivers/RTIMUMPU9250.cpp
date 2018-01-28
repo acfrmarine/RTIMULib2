@@ -613,12 +613,12 @@ bool RTIMUMPU9250::IMURead()
     //  sort out gyro axes
 
     m_imuData.gyro.setX(m_imuData.gyro.x());
-    m_imuData.gyro.setY(-m_imuData.gyro.y());
-    m_imuData.gyro.setZ(-m_imuData.gyro.z());
+    m_imuData.gyro.setY(m_imuData.gyro.y());
+    m_imuData.gyro.setZ(m_imuData.gyro.z());
 
     //  sort out accel data;
 
-    m_imuData.accel.setX(-m_imuData.accel.x());
+    m_imuData.accel.setX(m_imuData.accel.x());
 
     //  use the compass fuse data adjustments
 
@@ -628,11 +628,11 @@ bool RTIMUMPU9250::IMURead()
 
     //  sort out compass axes
 
-    float temp;
+    //float temp;
 
-    temp = m_imuData.compass.x();
-    m_imuData.compass.setX(m_imuData.compass.y());
-    m_imuData.compass.setY(-temp);
+    //temp = m_imuData.compass.x();
+    //m_imuData.compass.setX(m_imuData.compass.y());
+    //m_imuData.compass.setY(-temp);
 
     //  now do standard processing
 
