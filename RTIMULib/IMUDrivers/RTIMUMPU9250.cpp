@@ -646,10 +646,10 @@ bool RTIMUMPU9250::IMURead()
     cz = -m_imuData.compass.z();
 
     // Put compass axes in float frame.
-    m_imuData.compass.SetX(cx);
+    m_imuData.compass.setX(cx);
     float ccz = m_imuData.compass.z();
-    m_imuData.compass.SetZ(cy);
-    m_imuData.compass.SetY(-ccz);
+    m_imuData.compass.setZ(cy);
+    m_imuData.compass.setY(-ccz);
 
     //  now do standard processing
 
