@@ -610,15 +610,21 @@ bool RTIMUMPU9250::IMURead()
     RTMath::convertToVector(fifoData + 6, m_imuData.gyro, m_gyroScale, true);
     RTMath::convertToVector(compassData + 1, m_imuData.compass, 0.6f, false);
 
-    //  sort out gyro axes
 
-    m_imuData.gyro.setX(m_imuData.gyro.x());
-    m_imuData.gyro.setY(m_imuData.gyro.y());
-    m_imuData.gyro.setZ(m_imuData.gyro.z());
+    // Change axis over for the float
+    // y>>z, x>>x, z>>-y
 
-    //  sort out accel data;
+    //  sort out gyro axes for the float
+    m_imuData.gyro.setX(m_imuData.gyro.x()); // x >> x
+    float gz = m_imuData.gyro.z();
+    m_imuData.gyro.setZ(m_imuData.gyro.y());
+    m_imuData.gyro.setY(-gz);
 
+    //  sort out accel data. Put it into float frame;
     m_imuData.accel.setX(m_imuData.accel.x());
+    float az = m_imuData.accel.z();
+    m_imuData.accel.setZ(m_imuData.accel.y());
+    m_imuData.accel.setY(-az);
 
     //  use the compass fuse data adjustments
 
@@ -629,10 +635,21 @@ bool RTIMUMPU9250::IMURead()
     //  sort out compass axes
 
     //float temp;
-
     //temp = m_imuData.compass.x();
     //m_imuData.compass.setX(m_imuData.compass.y());
     //m_imuData.compass.setY(-temp);
+
+    // Sort out compass axes -> put into IMU frame
+    float cx,cy,cz;
+    cx = m_imuData.compass.y();
+    cy = m_imuData.compass.x();
+    cz = -m_imuData.compass.z();
+
+    // Put compass axes in float frame.
+    m_imuData.compass.SetX(cx);
+    float ccz = m_imuData.compass.z();
+    m_imuData.compass.SetZ(cy);
+    m_imuData.compass.SetY(-ccz);
 
     //  now do standard processing
 
